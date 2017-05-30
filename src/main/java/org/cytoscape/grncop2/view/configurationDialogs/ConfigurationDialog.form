@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.9" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="csvDelimiterGroup">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="csvDelimiterGroup.add(tabRadioButton);&#xa;csvDelimiterGroup.add(comaRadioButton);&#xa;csvDelimiterGroup.add(semicolonRadioButton);"/>
+      </AuxValues>
+    </Component>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="title" type="java.lang.String" value="GRNCOP2"/>
+    <Property name="resizable" type="boolean" value="false"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="windowLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="windowSpinner" min="-2" pref="64" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="fileSeparatorLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="tabRadioButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="comaRadioButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="semicolonRadioButton" pref="123" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="datasetsPanel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="runGRNCOP2Button" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="geneFileButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="genesFileTextField" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="windowLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="windowSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fileSeparatorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tabRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="comaRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="semicolonRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="geneFileButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="genesFileTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="datasetsPanel" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="runGRNCOP2Button" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JLayeredPane" name="datasetsPanel">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Datasets"/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="loadDatasetButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="deleteDatasetButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="144" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <Component id="jScrollPane1" min="-2" pref="302" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="loadDatasetButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="deleteDatasetButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="loadDatasetButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Add"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadDatasetButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JList" name="datasetList">
+              <Properties>
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="datasetsListModel" type="code"/>
+                </Property>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JButton" name="deleteDatasetButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Delete"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteDatasetButtonActionPerformed"/>
+          </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="runGRNCOP2Button">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Lucida Grande" size="18" style="0"/>
+        </Property>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/images/exec.gif"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Run GRNCOP2"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="runGRNCOP2ButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="windowLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Window"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="windowSpinner">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="4" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="fileSeparatorLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="File delimiter"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="tabRadioButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tab"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tabRadioButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="comaRadioButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Coma"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comaRadioButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="semicolonRadioButton">
+      <Properties>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="Semicolon"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="semicolonRadioButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="geneFileButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Select genes file"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="geneFileButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="genesFileTextField">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ee" green="ee" red="ee" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Genes file selected (X genes)"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="genesFileTextField.setVisible(false);"/>
+      </AuxValues>
+    </Component>
+  </SubComponents>
+</Form>
