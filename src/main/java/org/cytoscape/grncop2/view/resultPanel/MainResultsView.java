@@ -1,27 +1,15 @@
 package org.cytoscape.grncop2.view.resultPanel;
 
 import java.awt.Component;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.swing.Icon;
-import javax.swing.JFileChooser;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
 import org.cytoscape.grncop2.controller.NetworkController;
 import org.cytoscape.grncop2.controller.ResultPanelController;
-import org.cytoscape.grncop2.controller.utils.CySwing;
-import org.cytoscape.grncop2.model.businessobjects.Rule;
 
 /**
  * @license Apache License V2 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -32,7 +20,6 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
     private final NetworkController network;
     private Integer lag = 0;
     private final int maxLag;
-    private List<Rule> rules;
     
     /**
      * Creates new form MainResultsView
@@ -63,10 +50,6 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         coverageSlider = new javax.swing.JSlider();
         coverageTextField = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
-        rulesLabel = new javax.swing.JLabel();
-        rulesPane = new javax.swing.JScrollPane();
-        rulesTable = new javax.swing.JTable();
-        downloadResultsButton = new javax.swing.JButton();
         closeResultsButton = new javax.swing.JButton();
         applyFiltersButton = new javax.swing.JButton();
         prevWindowButton = new javax.swing.JButton();
@@ -125,19 +108,6 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
             }
         });
 
-        rulesLabel.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        rulesLabel.setText("Inferred Rules");
-
-        refreshNetwork();
-        rulesPane.setViewportView(rulesTable);
-
-        downloadResultsButton.setText("Save inferred rules");
-        downloadResultsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                downloadResultsButtonActionPerformed(evt);
-            }
-        });
-
         closeResultsButton.setText("Close results");
         closeResultsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -190,13 +160,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rulesPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(jSeparator2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(rulesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(downloadResultsButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(closeResultsButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(rcaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,13 +185,14 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
                         .addComponent(nextWindowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(showAllToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jSeparator3))
+                    .addComponent(jSeparator3)
+                    .addComponent(closeResultsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(rcaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rcaSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -255,14 +220,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rulesLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rulesPane, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(downloadResultsButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(closeResultsButton)
-                .addContainerGap())
+                .addComponent(closeResultsButton))
         );
 
         rcaSlider.addChangeListener(new SliderChangeListener(rcaTextField));
@@ -273,33 +231,6 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
     private void closeResultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeResultsButtonActionPerformed
         resultPanelController.dispose();
     }//GEN-LAST:event_closeResultsButtonActionPerformed
-
-    private void downloadResultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadResultsButtonActionPerformed
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Save coherence matrix");
-        chooser.setSelectedFile(new File("coherenceMatrix.csv"));
-        chooser.setFileFilter(new FileNameExtensionFilter("CSV file", "csv"));
-        int retrival = chooser.showSaveDialog(CySwing.getDesktopJFrame());
-        if (retrival == JFileChooser.APPROVE_OPTION) {
-            String fileName;
-            try {
-                fileName = chooser.getSelectedFile().getCanonicalPath();
-            } catch (IOException ex) {
-                CySwing.displayPopUpMessage("Coudln't save the coherence matrix.");
-                return;
-            }
-            if (!fileName.endsWith(".csv")) {
-                fileName += ".csv";
-            }
-            try (BufferedWriter output = new BufferedWriter(new FileWriter(fileName))) {
-                for (Rule rule : rules) {
-                    output.write(rule.toString() + "\n");
-                }
-            } catch (IOException ex) {
-                CySwing.displayPopUpMessage("Coudln't save the coherence matrix.");
-            }
-        }
-    }//GEN-LAST:event_downloadResultsButtonActionPerformed
 
     private void accuracyTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accuracyTextFieldActionPerformed
         accuracySlider.setValue(Integer.parseInt(accuracyTextField.getText()));
@@ -388,40 +319,12 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
     }//GEN-LAST:event_showAllToggleButtonActionPerformed
 
     private void refreshNetwork() {
-        rules = network.updateFilters(rcaSlider.getValue() / 100F, accuracySlider.getValue() / 100F, coverageSlider.getValue() / 100F);
+        network.updateFilters(rcaSlider.getValue() / 100F, accuracySlider.getValue() / 100F, coverageSlider.getValue() / 100F);
         refreshLag();
     }
     
     private void refreshLag() {
         network.filterEdges(lag);
-        List<Rule> visibleRules = rules.stream().filter(rule -> lag == null || rule.lag == lag).collect(Collectors.toList());
-        Object[][] model = new Object[visibleRules.size()][];
-        int i = 0;
-        for (Rule rule : visibleRules) {
-            model[i++] = new Object [] { rule.lag, rule.regulator, rule.getInteraction(), rule.target, rule.accuracy, rule.coverage };
-        }
-        rulesTable.setModel(new javax.swing.table.DefaultTableModel(
-            model,
-            new String [] { "Time-lag", "Regulator", "Type", "Target", "Accuracy", "Coverage" }
-        ) {
-            Class[] types = new Class [] {
-                Integer.class, String.class, String.class, String.class, Float.class, Float.class
-            };
-
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            @Override
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
-
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-        });
     }
     
     class SliderChangeListener implements ChangeListener {
@@ -447,7 +350,6 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
     private javax.swing.JLabel coverageLabel;
     private javax.swing.JSlider coverageSlider;
     private javax.swing.JTextField coverageTextField;
-    private javax.swing.JButton downloadResultsButton;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField lagTextField;
@@ -456,9 +358,6 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
     private javax.swing.JLabel rcaLabel;
     private javax.swing.JSlider rcaSlider;
     private javax.swing.JTextField rcaTextField;
-    private javax.swing.JLabel rulesLabel;
-    private javax.swing.JScrollPane rulesPane;
-    private javax.swing.JTable rulesTable;
     private javax.swing.JToggleButton showAllToggleButton;
     // End of variables declaration//GEN-END:variables
 
