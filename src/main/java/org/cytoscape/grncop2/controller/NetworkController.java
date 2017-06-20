@@ -2,6 +2,7 @@ package org.cytoscape.grncop2.controller;
 
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,6 +21,7 @@ import org.cytoscape.view.layout.CyLayoutAlgorithmManager;
 import org.cytoscape.view.model.CyNetworkView;
 import org.cytoscape.view.model.CyNetworkViewFactory;
 import org.cytoscape.view.model.CyNetworkViewManager;
+import org.cytoscape.view.model.View;
 import org.cytoscape.view.presentation.property.ArrowShapeVisualProperty;
 import org.cytoscape.view.presentation.property.BasicVisualLexicon;
 import org.cytoscape.view.vizmap.VisualMappingFunctionFactory;
@@ -55,6 +57,7 @@ public final class NetworkController {
     private final CyNetworkView networkView;
     private final GRNCOP2Result result;
     private final Map<String, CyNode> nodes;
+    private final List<View<CyNode>> disconnectedNodes;
     
     private VisualStyle style;
     private ContinuousMapping edgeColorMapping;
@@ -88,6 +91,8 @@ public final class NetworkController {
             row.set(CyNetwork.NAME, gene);
             nodes.put(gene, node);
         }
+        disconnectedNodes = new LinkedList<>();
+
         
         networkManager.addNetwork(network);
         networkView = networkViewFactory.createNetworkView(network);
@@ -142,6 +147,14 @@ public final class NetworkController {
             row.set(AccuracyColumn, rule.accuracy);
             row.set(CoverageColumn, rule.coverage);
         });
+        
+        network.getNodeList().stream().forEach((node) -> {
+            if (network.getAdjacentEdgeList(node, CyEdge.Type.ANY).isEmpty()) {
+                View<CyNode> nodeView = networkView.getNodeView(node);
+                disconnectedNodes.add(nodeView);
+                nodeView.setVisualProperty(BasicVisualLexicon.NODE_VISIBLE, false);
+            }
+        });
 
         applyVisualStyle(accuracy, coverage);
         applyLayout();
@@ -154,6 +167,12 @@ public final class NetworkController {
             CyRow row = network.getRow(edgeView.getModel());
             boolean isVisible = lag == null || Objects.equals(lag, row.get(LagColumn, Integer.class));
             edgeView.setVisualProperty(BasicVisualLexicon.EDGE_VISIBLE, isVisible);
+        });
+    }
+    
+    public void showDisconnectedNodes(boolean show) {
+        disconnectedNodes.stream().forEach((nodeView) -> {
+            nodeView.setVisualProperty(BasicVisualLexicon.NODE_VISIBLE, show);
         });
     }
 

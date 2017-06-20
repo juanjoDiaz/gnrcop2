@@ -29,6 +29,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         this.network = resultPanelController.getNetwork();
         this.maxLag = this.resultPanelController.getResult().getGRNs()[0].length - 1;
         initComponents();
+        refreshNetwork();
     }
 
     /**
@@ -57,6 +58,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         nextWindowButton = new javax.swing.JButton();
         showAllToggleButton = new javax.swing.JToggleButton();
         jSeparator3 = new javax.swing.JSeparator();
+        showDisconnectedNodesCheckBox = new javax.swing.JCheckBox();
 
         rcaLabel.setText("RCA");
 
@@ -151,6 +153,14 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
             }
         });
 
+        showDisconnectedNodesCheckBox.setText("Show disconnected nodes");
+        showDisconnectedNodesCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        showDisconnectedNodesCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showDisconnectedNodesCheckBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -186,27 +196,27 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(nextWindowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(showAllToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(showAllToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(showDisconnectedNodesCheckBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(rcaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rcaSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rcaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(rcaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(accuracyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(accuracySlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(accuracyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(accuracyLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(coverageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(coverageSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(coverageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(coverageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(applyFiltersButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -217,6 +227,8 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
                     .addComponent(nextWindowButton)
                     .addComponent(lagTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(showAllToggleButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(showDisconnectedNodesCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -320,8 +332,16 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         refreshLag();
     }//GEN-LAST:event_showAllToggleButtonActionPerformed
 
+    private void showDisconnectedNodesCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDisconnectedNodesCheckBoxActionPerformed
+        network.showDisconnectedNodes(showDisconnectedNodesCheckBox.isSelected());
+    }//GEN-LAST:event_showDisconnectedNodesCheckBoxActionPerformed
+
     private void refreshNetwork() {
-        network.updateFilters(rcaSlider.getValue() / 100F, accuracySlider.getValue() / 100F, coverageSlider.getValue() / 100F);
+        network.updateFilters(
+            rcaSlider.getValue() / 100F,
+            accuracySlider.getValue() / 100F,
+            coverageSlider.getValue() / 100F);
+        showDisconnectedNodesCheckBoxActionPerformed(null);
         refreshLag();
     }
     
@@ -361,6 +381,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
     private javax.swing.JSlider rcaSlider;
     private javax.swing.JTextField rcaTextField;
     private javax.swing.JToggleButton showAllToggleButton;
+    private javax.swing.JCheckBox showDisconnectedNodesCheckBox;
     // End of variables declaration//GEN-END:variables
 
     @Override
