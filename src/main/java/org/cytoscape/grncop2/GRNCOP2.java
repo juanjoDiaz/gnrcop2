@@ -37,11 +37,15 @@ public class GRNCOP2 extends AbstractCyActivator {
         VisualMappingManager visualMappingManager = getService(context, VisualMappingManager.class);
         VisualStyleFactory visualStyleFactory = getService(context, VisualStyleFactory.class);
         VisualMappingFunctionFactory continuousMappingFactoryServiceRef = getService(context, VisualMappingFunctionFactory.class, "(mapping.type=continuous)");
+        VisualMappingFunctionFactory discreteMappingFactoryServiceRef = getService(context, VisualMappingFunctionFactory.class, "(mapping.type=discrete)");
         CyLayoutAlgorithmManager layoutAlgorithmManager = getService(context, CyLayoutAlgorithmManager.class);
         TaskManager taskManager = getService(context, TaskManager.class);
         
         CySwing.init(swingApplication, serviceRegistrar);
-        NetworkController.init(taskManager, networkFactory, networkManager, networkViewFactory, networkViewManager, visualStyleFactory, visualMappingManager, continuousMappingFactoryServiceRef,layoutAlgorithmManager);
+        NetworkController.init(taskManager, networkFactory, networkManager,
+                networkViewFactory, networkViewManager, visualStyleFactory,
+                visualMappingManager, continuousMappingFactoryServiceRef,
+                discreteMappingFactoryServiceRef,layoutAlgorithmManager);
         
         // UI controls
         MenuAction menuAction = new MenuAction(taskManager);

@@ -246,7 +246,7 @@ public class ConfigurationDialog extends javax.swing.JDialog {
         taskManager.execute(new TaskIterator(new Task[] { new ExecuteGRNCOP2Task(
             genesFilePath,
             Arrays.asList(datasetsListModel.toArray()).toArray(new String[datasetsListModel.size()]),
-            (Integer)windowSpinner.getValue()
+            (Integer)windowSpinner.getValue(), csvSeparator
         ) }));
     }//GEN-LAST:event_runGRNCOP2ButtonActionPerformed
 

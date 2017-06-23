@@ -17,12 +17,14 @@ public class ExecuteGRNCOP2Task extends AbstractTask {
     private final GRNCOP2 grncop2;
     private final String genesFilePath;
     private final String[] datasetsPaths;
+    private final char csvSeparator;
     
-    public ExecuteGRNCOP2Task(String genesFilePath, String[] datasetsPaths, int window) {
+    public ExecuteGRNCOP2Task(String genesFilePath, String[] datasetsPaths, int window, char csvSeparator) {
         grncop2 = new GRNCOP2();
         grncop2.SetWindow(window);
         this.genesFilePath = genesFilePath;
         this.datasetsPaths = datasetsPaths;
+        this.csvSeparator = csvSeparator;
     }
     
     @Override
@@ -31,7 +33,7 @@ public class ExecuteGRNCOP2Task extends AbstractTask {
             ProgressMonitor pm = new CytoscapeTaskMonitor(tm);
             grncop2.setProgressMonitor(pm);
             tm.setTitle("Loading input files");
-            grncop2.load(genesFilePath, datasetsPaths);
+            grncop2.load(genesFilePath, datasetsPaths, csvSeparator);
             tm.setTitle("Running GNRCOP2 analysis");
             GRNCOP2Result result = grncop2.search();
             pm.setStatus("Displaying the results.");

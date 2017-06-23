@@ -21,8 +21,7 @@ import org.cytoscape.grncop2.model.logic.utils.CSVFileReader;
 
 public class GRNCOP2 implements Callable {
     private static ProgressMonitor pm;
-    
-    private static char csvSeparator = ';';
+
     private static int window = 0;
 
     private final int maxThreads = Runtime.getRuntime().availableProcessors(); 
@@ -36,7 +35,6 @@ public class GRNCOP2 implements Callable {
     private static Relationship[][][][] GRN;
 
     private int pGene;
-    private Threshold[][][] D_WTHRM;
 
     public void SetWindow(int window){
         GRNCOP2.window = window;
@@ -68,7 +66,7 @@ public class GRNCOP2 implements Callable {
         this.pGene = pGene;     
     }
     
-    public void load(String genesFilePath, String datasetsPaths[]) throws FileNotFoundException, IOException, NumberFormatException {
+    public void load(String genesFilePath, String datasetsPaths[], char csvSeparator) throws FileNotFoundException, IOException, NumberFormatException {
         try (BufferedReader br = new BufferedReader(new FileReader(genesFilePath))) {
             List<String> geneList = new LinkedList<>();
             String line;

@@ -30,6 +30,7 @@ import org.cytoscape.view.vizmap.VisualStyle;
 import org.cytoscape.view.vizmap.VisualStyleFactory;
 import org.cytoscape.view.vizmap.mappings.BoundaryRangeValues;
 import org.cytoscape.view.vizmap.mappings.ContinuousMapping;
+import org.cytoscape.view.vizmap.mappings.DiscreteMapping;
 import org.cytoscape.work.TaskIterator;
 import org.cytoscape.work.TaskManager;
 
@@ -46,6 +47,7 @@ public final class NetworkController {
     private static VisualMappingManager visualMappingManager;
     private static VisualStyleFactory visualStyleFactory;
     private static VisualMappingFunctionFactory continuousMappingFactoryServiceRef;
+    private static VisualMappingFunctionFactory discreteMappingFactoryServiceRef;
     private static CyLayoutAlgorithmManager layoutAlgorithmManager;
 
     public static final String LagColumn = "Time-lag";
@@ -60,13 +62,16 @@ public final class NetworkController {
     private final List<View<CyNode>> disconnectedNodes;
     
     private VisualStyle style;
-    private ContinuousMapping edgeColorMapping;
+    private DiscreteMapping edgeColorMapping;
+    private ContinuousMapping edgeTransparencyMapping;
     private ContinuousMapping edgeWidthMapping;
     
     public static void init(TaskManager taskManager, CyNetworkFactory networkFactory, CyNetworkManager networkManager,
             CyNetworkViewFactory networkViewFactory, CyNetworkViewManager networkViewManager,
             VisualStyleFactory visualStyleFactory, VisualMappingManager visualMappingManager,
-            VisualMappingFunctionFactory continuousMappingFactoryServiceRef, CyLayoutAlgorithmManager layoutAlgorithmManager) {
+            VisualMappingFunctionFactory continuousMappingFactoryServiceRef,
+            VisualMappingFunctionFactory discreteMappingFactoryServiceRef,
+            CyLayoutAlgorithmManager layoutAlgorithmManager) {
         NetworkController.taskManager = taskManager;
         NetworkController.networkFactory = networkFactory;
         NetworkController.networkManager = networkManager;
@@ -75,6 +80,7 @@ public final class NetworkController {
         NetworkController.visualStyleFactory = visualStyleFactory;
         NetworkController.visualMappingManager = visualMappingManager;
         NetworkController.continuousMappingFactoryServiceRef = continuousMappingFactoryServiceRef;
+        NetworkController.discreteMappingFactoryServiceRef = discreteMappingFactoryServiceRef;
         NetworkController.layoutAlgorithmManager = layoutAlgorithmManager;
     }
     
@@ -194,11 +200,24 @@ public final class NetworkController {
         if (edgeColorMapping != null) {
             style.removeVisualMappingFunction(edgeColorMapping.getVisualProperty());
         }
-        edgeColorMapping = (ContinuousMapping)continuousMappingFactoryServiceRef
-           .createVisualMappingFunction(AccuracyColumn, Double.class, BasicVisualLexicon.EDGE_STROKE_UNSELECTED_PAINT);
-        edgeColorMapping.addPoint(accuracy, new BoundaryRangeValues<>(new Color(0xE5E5E5), new Color(0xE5E5E5), new Color(0xE5E5E5)));
-        edgeColorMapping.addPoint(1d, new BoundaryRangeValues<>(new Color(0x333333), new Color(0x333333), new Color(0x333333)));
+        edgeColorMapping = (DiscreteMapping)discreteMappingFactoryServiceRef
+           .createVisualMappingFunction(TypeColumn, Integer.class, BasicVisualLexicon.EDGE_STROKE_UNSELECTED_PAINT);
+        edgeColorMapping.putMapValue(3, new Color(0x000066));
+        edgeColorMapping.putMapValue(2, new Color(0x006666));
+        edgeColorMapping.putMapValue(1, new Color(0x00CCCC));
+        edgeColorMapping.putMapValue(-1, new Color(0xFF00CC));
+        edgeColorMapping.putMapValue(-2, new Color(0xFF3300));
+        edgeColorMapping.putMapValue(-3, new Color(0xCC0000));
         style.addVisualMappingFunction(edgeColorMapping);
+
+        if (edgeTransparencyMapping != null) {
+            style.removeVisualMappingFunction(edgeTransparencyMapping.getVisualProperty());
+        }
+        edgeTransparencyMapping = (ContinuousMapping)continuousMappingFactoryServiceRef
+           .createVisualMappingFunction(AccuracyColumn, Double.class, BasicVisualLexicon.EDGE_TRANSPARENCY);
+        edgeTransparencyMapping.addPoint(accuracy, new BoundaryRangeValues<>(10, 10, 10));
+        edgeTransparencyMapping.addPoint(1d, new BoundaryRangeValues<>(255, 255,  255));
+        style.addVisualMappingFunction(edgeTransparencyMapping);
         
         if (edgeWidthMapping != null) {
             style.removeVisualMappingFunction(edgeWidthMapping.getVisualProperty());
