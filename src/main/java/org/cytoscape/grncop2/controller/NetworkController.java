@@ -59,7 +59,7 @@ public final class NetworkController {
     private final CyNetworkView networkView;
     private final GRNCOP2Result result;
     private final Map<String, CyNode> nodes;
-    private final List<View<CyNode>> disconnectedNodes;
+    private List<View<CyNode>> disconnectedNodes;
     
     private VisualStyle style;
     private DiscreteMapping edgeColorMapping;
@@ -105,7 +105,7 @@ public final class NetworkController {
         networkViewManager.addNetworkView(networkView);
     }
     
-    public List<Rule> updateFilters(float rca, float accuracy, float coverage) {
+    public void updateFilters(float rca, float accuracy, float coverage) {
         List<Rule> rules = result.getRules(rca, accuracy, coverage);
         network.removeEdges(network.getEdgeList());
         
@@ -154,31 +154,40 @@ public final class NetworkController {
             row.set(CoverageColumn, rule.coverage);
         });
         
-        network.getNodeList().stream().forEach((node) -> {
-            if (network.getAdjacentEdgeList(node, CyEdge.Type.ANY).isEmpty()) {
-                View<CyNode> nodeView = networkView.getNodeView(node);
-                disconnectedNodes.add(nodeView);
-                nodeView.setVisualProperty(BasicVisualLexicon.NODE_VISIBLE, false);
-            }
-        });
+        disconnectedNodes.stream().forEach((nodeView) -> nodeView.clearValueLock(BasicVisualLexicon.NODE_VISIBLE));
+        
+        disconnectedNodes = network.getNodeList().stream()
+            .map((nodeView) -> network.getAdjacentEdgeList(nodeView, CyEdge.Type.ANY).isEmpty()
+                ? networkView.getNodeView(nodeView)
+                :null)
+            .filter((nodeView) -> nodeView != null)
+            .collect(Collectors.toList());
 
         applyVisualStyle(accuracy, coverage);
         applyLayout();
-        
-        return rules;
     }
     
     public void filterEdges(Integer lag) {
         networkView.getEdgeViews().stream().forEach((edgeView) -> {
             CyRow row = network.getRow(edgeView.getModel());
             boolean isVisible = lag == null || Objects.equals(lag, row.get(LagColumn, Integer.class));
-            edgeView.setVisualProperty(BasicVisualLexicon.EDGE_VISIBLE, isVisible);
+            if (isVisible) {
+                edgeView.clearValueLock(BasicVisualLexicon.EDGE_VISIBLE);
+            } else {
+                row.set(CyNetwork.SELECTED, false);
+                edgeView.setLockedValue(BasicVisualLexicon.EDGE_VISIBLE, false);
+            }
         });
     }
     
     public void showDisconnectedNodes(boolean show) {
         disconnectedNodes.stream().forEach((nodeView) -> {
-            nodeView.setVisualProperty(BasicVisualLexicon.NODE_VISIBLE, show);
+            if (show) {
+                nodeView.clearValueLock(BasicVisualLexicon.NODE_VISIBLE);
+            } else {
+                network.getRow(nodeView.getModel()).set(CyNetwork.SELECTED, false);
+                nodeView.setLockedValue(BasicVisualLexicon.NODE_VISIBLE, false);
+            }
         });
     }
 
