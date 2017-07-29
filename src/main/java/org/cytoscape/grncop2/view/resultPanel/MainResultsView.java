@@ -10,12 +10,20 @@ import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
 import org.cytoscape.grncop2.controller.NetworkController;
 import org.cytoscape.grncop2.controller.ResultPanelController;
+import org.cytoscape.grncop2.controller.tasks.ApplyVisualStyleTask;
+import org.cytoscape.grncop2.controller.tasks.ShowDisconnectedNodesTask;
+import org.cytoscape.grncop2.controller.tasks.UpdateFiltersTask;
+import org.cytoscape.grncop2.controller.tasks.UpdateTimeLagFilterTask;
+import org.cytoscape.work.Task;
+import org.cytoscape.work.TaskIterator;
+import org.cytoscape.work.TaskManager;
 
 /**
  * @license Apache License V2 <http://www.apache.org/licenses/LICENSE-2.0.html>
  * @author Juan José Díaz Montaña
  */
 public class MainResultsView extends javax.swing.JPanel implements CytoPanelComponent {
+    private final TaskManager taskManager;
     private final ResultPanelController resultPanelController;
     private final NetworkController network;
     private Integer lag = 0;
@@ -24,12 +32,12 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
     /**
      * Creates new form MainResultsView
      */
-    public MainResultsView(ResultPanelController resultPanelController) {
+    public MainResultsView(TaskManager taskManager, ResultPanelController resultPanelController) {
+        this.taskManager = taskManager;
         this.resultPanelController = resultPanelController;
         this.network = resultPanelController.getNetwork();
         this.maxLag = this.resultPanelController.getResult().getGRNs()[0].length - 1;
         initComponents();
-        refreshNetwork();
     }
 
     /**
@@ -333,20 +341,35 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
     }//GEN-LAST:event_showAllToggleButtonActionPerformed
 
     private void showDisconnectedNodesCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDisconnectedNodesCheckBoxActionPerformed
-        network.showDisconnectedNodes(showDisconnectedNodesCheckBox.isSelected());
+        taskManager.execute(new TaskIterator(new Task[] {
+            new ShowDisconnectedNodesTask(network, showDisconnectedNodesCheckBox.isSelected())
+        }));
     }//GEN-LAST:event_showDisconnectedNodesCheckBoxActionPerformed
 
+    public TaskIterator getRefreshNetworkTasks() {
+        TaskIterator tasks = new TaskIterator(new Task[] {
+            new UpdateFiltersTask(
+                network,
+                rcaSlider.getValue() / 100F,
+                accuracySlider.getValue() / 100F,
+                coverageSlider.getValue() / 100F
+            ),
+            new ApplyVisualStyleTask(network),
+            new ShowDisconnectedNodesTask(network, showDisconnectedNodesCheckBox.isSelected()),
+            new UpdateTimeLagFilterTask(network, lag)
+        });
+        tasks.append(network.getApplyLayoutTask());
+        return tasks;
+    }
+    
     private void refreshNetwork() {
-        network.updateFilters(
-            rcaSlider.getValue() / 100F,
-            accuracySlider.getValue() / 100F,
-            coverageSlider.getValue() / 100F);
-        showDisconnectedNodesCheckBoxActionPerformed(null);
-        refreshLag();
+        taskManager.execute(getRefreshNetworkTasks());
     }
     
     private void refreshLag() {
-        network.filterEdges(lag);
+        taskManager.execute(new TaskIterator(new Task[] {
+            new UpdateTimeLagFilterTask(network, lag)
+        }));
     }
     
     class SliderChangeListener implements ChangeListener {

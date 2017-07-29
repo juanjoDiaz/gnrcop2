@@ -1,6 +1,5 @@
 package org.cytoscape.grncop2.controller.tasks;
 
-import org.cytoscape.grncop2.controller.ResultPanelController;
 import org.cytoscape.grncop2.controller.utils.CySwing;
 import org.cytoscape.grncop2.controller.utils.CytoscapeTaskMonitor;
 import org.cytoscape.grncop2.model.businessobjects.GRNCOP2Result;
@@ -30,17 +29,18 @@ public class ExecuteGRNCOP2Task extends AbstractTask {
     @Override
     public void run(TaskMonitor tm) {
         try {
+            tm.setTitle("Running GNRCOP2 analysis");
             ProgressMonitor pm = new CytoscapeTaskMonitor(tm);
             grncop2.setProgressMonitor(pm);
-            tm.setTitle("Loading input files");
+            pm.setStatus("Loading input files");
             grncop2.load(genesFilePath, datasetsPaths, csvSeparator);
-            tm.setTitle("Running GNRCOP2 analysis");
             GRNCOP2Result result = grncop2.search();
-            pm.setStatus("Displaying the results.");
-            new ResultPanelController(result);
-            CySwing.displayPopUpMessage("GRNCOP2 anlysis succesfully completed!");
+            insertTasksAfterCurrentTask(new ShowResultsTask(result));
         } catch (Exception ex) {
-            CySwing.displayPopUpMessage(ex.getMessage());
+            String error = ex.getMessage();
+            CySwing.displayPopUpMessage(error == null || error.isEmpty()
+                ? "An unexpected error ocurred during the analysis."
+                : error);
         }
     }
     

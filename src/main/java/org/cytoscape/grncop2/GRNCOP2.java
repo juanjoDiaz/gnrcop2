@@ -3,7 +3,9 @@ package org.cytoscape.grncop2;
 import java.util.Properties;
 import org.cytoscape.application.swing.CyAction;
 import org.cytoscape.application.swing.CySwingApplication;
+import org.cytoscape.event.CyEventHelper;
 import org.cytoscape.grncop2.controller.NetworkController;
+import org.cytoscape.grncop2.controller.ResultPanelController;
 import org.cytoscape.grncop2.controller.actions.MenuAction;
 import org.cytoscape.grncop2.controller.listener.NetworkClosedListener;
 import org.cytoscape.grncop2.controller.utils.CySwing;
@@ -34,6 +36,7 @@ public class GRNCOP2 extends AbstractCyActivator {
         CyNetworkManager networkManager = getService(context, CyNetworkManager.class);
         CyNetworkViewFactory networkViewFactory = getService(context, CyNetworkViewFactory.class);
         CyNetworkViewManager networkViewManager = getService(context, CyNetworkViewManager.class);
+        CyEventHelper eventHelper = getService(context, CyEventHelper.class);
         VisualMappingManager visualMappingManager = getService(context, VisualMappingManager.class);
         VisualStyleFactory visualStyleFactory = getService(context, VisualStyleFactory.class);
         VisualMappingFunctionFactory continuousMappingFactoryServiceRef = getService(context, VisualMappingFunctionFactory.class, "(mapping.type=continuous)");
@@ -42,10 +45,12 @@ public class GRNCOP2 extends AbstractCyActivator {
         TaskManager taskManager = getService(context, TaskManager.class);
         
         CySwing.init(swingApplication, serviceRegistrar);
-        NetworkController.init(taskManager, networkFactory, networkManager,
-                networkViewFactory, networkViewManager, visualStyleFactory,
-                visualMappingManager, continuousMappingFactoryServiceRef,
-                discreteMappingFactoryServiceRef,layoutAlgorithmManager);
+        ResultPanelController.init(taskManager);
+        NetworkController.init(networkFactory, networkManager,
+                networkViewFactory, networkViewManager, eventHelper,
+                visualStyleFactory, visualMappingManager,
+                continuousMappingFactoryServiceRef, discreteMappingFactoryServiceRef,
+                layoutAlgorithmManager);
         
         // UI controls
         MenuAction menuAction = new MenuAction(taskManager);
