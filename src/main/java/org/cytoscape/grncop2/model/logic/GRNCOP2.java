@@ -118,7 +118,7 @@ public class GRNCOP2 implements Callable {
         executorService.shutdown();
         for (int gene = 0; gene < genes.length; gene++) {
             completionService.take();
-            pm.setProgress(gene / genes.length);
+            pm.setProgress((float)gene / genes.length);
         }
         
         return new GRNCOP2Result(genes, GRN);
