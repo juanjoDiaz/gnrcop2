@@ -1,19 +1,25 @@
 package org.cytoscape.grncop2.view.resultPanel;
 
 import java.awt.Component;
+import java.io.File;
 import javax.swing.Icon;
+import javax.swing.JFileChooser;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
 import org.cytoscape.grncop2.controller.NetworkController;
 import org.cytoscape.grncop2.controller.ResultPanelController;
+import org.cytoscape.grncop2.controller.actions.LoadResultAction;
 import org.cytoscape.grncop2.controller.tasks.ApplyVisualStyleTask;
+import org.cytoscape.grncop2.controller.tasks.ExportResultsTask;
 import org.cytoscape.grncop2.controller.tasks.ShowDisconnectedNodesTask;
 import org.cytoscape.grncop2.controller.tasks.UpdateFiltersTask;
 import org.cytoscape.grncop2.controller.tasks.UpdateTimeLagFilterTask;
+import org.cytoscape.grncop2.controller.utils.CySwing;
 import org.cytoscape.work.Task;
 import org.cytoscape.work.TaskIterator;
 import org.cytoscape.work.TaskManager;
@@ -59,7 +65,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         coverageSlider = new javax.swing.JSlider();
         coverageTextField = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
-        closeResultsButton = new javax.swing.JButton();
+        saveResultsButton = new javax.swing.JButton();
         applyFiltersButton = new javax.swing.JButton();
         prevWindowButton = new javax.swing.JButton();
         lagTextField = new javax.swing.JTextField();
@@ -67,6 +73,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         showAllToggleButton = new javax.swing.JToggleButton();
         jSeparator3 = new javax.swing.JSeparator();
         showDisconnectedNodesCheckBox = new javax.swing.JCheckBox();
+        closeResultsButton = new javax.swing.JButton();
 
         rcaLabel.setText("RCA");
 
@@ -118,10 +125,10 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
             }
         });
 
-        closeResultsButton.setText("Close results");
-        closeResultsButton.addActionListener(new java.awt.event.ActionListener() {
+        saveResultsButton.setText("Save results");
+        saveResultsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeResultsButtonActionPerformed(evt);
+                saveResultsButtonActionPerformed(evt);
             }
         });
 
@@ -169,6 +176,13 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
             }
         });
 
+        closeResultsButton.setText("Close results");
+        closeResultsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeResultsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -176,10 +190,11 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator3)
-                    .addComponent(closeResultsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(showDisconnectedNodesCheckBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(closeResultsButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSeparator2)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -204,8 +219,8 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(nextWindowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(showAllToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addComponent(showDisconnectedNodesCheckBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(showAllToggleButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(saveResultsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -240,7 +255,10 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(closeResultsButton))
+                .addComponent(saveResultsButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(closeResultsButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         rcaSlider.addChangeListener(new SliderChangeListener(rcaTextField));
@@ -248,9 +266,24 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         coverageSlider.addChangeListener(new SliderChangeListener(coverageTextField));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void closeResultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeResultsButtonActionPerformed
-        resultPanelController.dispose();
-    }//GEN-LAST:event_closeResultsButtonActionPerformed
+    private void saveResultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveResultsButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save GRNCOP2 results");
+        fileChooser.setSelectedFile(new File("grncop2results.grncop2"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("GRNCOP2 file", "grncop2"));
+        fileChooser.setCurrentDirectory(LoadResultAction.currentFolder);
+        int returnValue = fileChooser.showSaveDialog(CySwing.getDesktopJFrame());
+        if (returnValue != 0) {
+            return;
+        }
+        
+        LoadResultAction.currentFolder = new File(fileChooser.getSelectedFile().getParent());
+        String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+        if (!filePath.endsWith(".grncop2")) {
+            filePath += ".grncop2";
+        }
+        taskManager.execute(new TaskIterator(new ExportResultsTask(resultPanelController.getResult(), filePath)));
+    }//GEN-LAST:event_saveResultsButtonActionPerformed
 
     private void accuracyTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accuracyTextFieldActionPerformed
         accuracySlider.setValue(Integer.parseInt(accuracyTextField.getText()));
@@ -346,6 +379,10 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         }));
     }//GEN-LAST:event_showDisconnectedNodesCheckBoxActionPerformed
 
+    private void closeResultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeResultsButtonActionPerformed
+        resultPanelController.dispose();
+    }//GEN-LAST:event_closeResultsButtonActionPerformed
+
     public TaskIterator getRefreshNetworkTasks() {
         TaskIterator tasks = new TaskIterator(new Task[] {
             new UpdateFiltersTask(
@@ -403,6 +440,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
     private javax.swing.JLabel rcaLabel;
     private javax.swing.JSlider rcaSlider;
     private javax.swing.JTextField rcaTextField;
+    private javax.swing.JButton saveResultsButton;
     private javax.swing.JToggleButton showAllToggleButton;
     private javax.swing.JCheckBox showDisconnectedNodesCheckBox;
     // End of variables declaration//GEN-END:variables

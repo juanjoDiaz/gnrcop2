@@ -19,10 +19,11 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jSeparator3" alignment="0" max="32767" attributes="0"/>
-                  <Component id="closeResultsButton" alignment="0" max="32767" attributes="0"/>
+                  <Component id="showDisconnectedNodesCheckBox" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="closeResultsButton" alignment="1" max="32767" attributes="0"/>
                           <Component id="jSeparator2" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -53,9 +54,9 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="showAllToggleButton" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="saveResultsButton" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <Component id="showDisconnectedNodesCheckBox" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -97,7 +98,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jSeparator3" min="-2" pref="13" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="saveResultsButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="closeResultsButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -179,12 +183,12 @@
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator2">
     </Component>
-    <Component class="javax.swing.JButton" name="closeResultsButton">
+    <Component class="javax.swing.JButton" name="saveResultsButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Close results"/>
+        <Property name="text" type="java.lang.String" value="Save results"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeResultsButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveResultsButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="applyFiltersButton">
@@ -239,6 +243,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showDisconnectedNodesCheckBoxActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="closeResultsButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Close results"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeResultsButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

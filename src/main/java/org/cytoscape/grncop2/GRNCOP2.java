@@ -6,7 +6,8 @@ import org.cytoscape.application.swing.CySwingApplication;
 import org.cytoscape.event.CyEventHelper;
 import org.cytoscape.grncop2.controller.NetworkController;
 import org.cytoscape.grncop2.controller.ResultPanelController;
-import org.cytoscape.grncop2.controller.actions.MenuAction;
+import org.cytoscape.grncop2.controller.actions.LoadResultAction;
+import org.cytoscape.grncop2.controller.actions.RunAnalysisAction;
 import org.cytoscape.grncop2.controller.listener.NetworkClosedListener;
 import org.cytoscape.grncop2.controller.utils.CySwing;
 import org.cytoscape.model.CyNetworkFactory;
@@ -53,8 +54,10 @@ public class GRNCOP2 extends AbstractCyActivator {
                 layoutAlgorithmManager);
         
         // UI controls
-        MenuAction menuAction = new MenuAction(taskManager);
-        registerService(context, menuAction, CyAction.class, new Properties());
+        RunAnalysisAction runAnalysisAction = new RunAnalysisAction(taskManager);
+        registerService(context, runAnalysisAction, CyAction.class, new Properties());
+        LoadResultAction loadResultAction = new LoadResultAction(taskManager);
+        registerService(context, loadResultAction, CyAction.class, new Properties());
         
         serviceRegistrar.registerService(new NetworkClosedListener(), NetworkAboutToBeDestroyedListener.class, new Properties());
     }

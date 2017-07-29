@@ -10,12 +10,12 @@ import org.cytoscape.work.TaskManager;
  * @license Apache License V2 <http://www.apache.org/licenses/LICENSE-2.0.html>
  * @author Juan José Díaz Montaña
  */
-public class MenuAction extends AbstractCyAction {
+public class RunAnalysisAction extends AbstractCyAction {
     private final ConfigurationDialog dialog;
     
-    public MenuAction(TaskManager taskManager) {
-        super("GRNCOP2");
-        setPreferredMenu("Apps");
+    public RunAnalysisAction(TaskManager taskManager) {
+        super("Run analysis");
+        setPreferredMenu("Apps.GRNCOP2");
         dialog = new ConfigurationDialog(taskManager);
     }
     

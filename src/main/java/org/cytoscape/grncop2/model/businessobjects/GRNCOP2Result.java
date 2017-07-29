@@ -1,5 +1,6 @@
 package org.cytoscape.grncop2.model.businessobjects;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * @license Apache License V2 <http://www.apache.org/licenses/LICENSE-2.0.html>
  * @author Juan José Díaz Montaña
  */
-public class GRNCOP2Result {
+public class GRNCOP2Result  implements Serializable {
     private final String[] genes;
     private final Relationship[][][][] grns;
     

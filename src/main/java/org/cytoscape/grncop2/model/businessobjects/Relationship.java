@@ -1,11 +1,13 @@
 package org.cytoscape.grncop2.model.businessobjects;
 
+import java.io.Serializable;
+
 /**
  * @license Apache License V2 <http://www.apache.org/licenses/LICENSE-2.0.html>
  * @author Cristian A. Gallo
  * @author Juan José Díaz Montaña
  */
-public class Relationship {
+public class Relationship implements Serializable {
     public final Metric downReg;
     public final Metric upReg;
 
