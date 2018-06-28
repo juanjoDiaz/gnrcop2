@@ -29,14 +29,13 @@ public class GRNCOP2 implements Callable {
     private final CompletionService completionService = new ExecutorCompletionService(executorService);
     
     private static String[] genes;
-    private static int[] numOfSamples;
-    private static float[][][] D_ged;
+    private static float[][][] expressionData;
     
     private static Relationship[][][][] GRN;
 
     private int pGene;
 
-    public void SetWindow(int window){
+    public void setWindow(int window){
         GRNCOP2.window = window;
     }
 
@@ -48,17 +47,9 @@ public class GRNCOP2 implements Callable {
         executorService.shutdownNow();
     }
 
-    public String[] getGenes(){
-        return genes;
-    }
-
-    public Relationship[][][][] getRules(){
-        return GRN;
-    }
-
     public GRNCOP2() {
         genes = null;
-        D_ged = null;
+        expressionData = null;
         GRN = null;
     }
 
@@ -76,10 +67,9 @@ public class GRNCOP2 implements Callable {
             genes = geneList.toArray(new String[geneList.size()]);
         }
 
-        numOfSamples = new int[datasetsPaths.length];
-        D_ged = new float[numOfSamples.length][genes.length][];
+        expressionData = new float[datasetsPaths.length][genes.length][];
         
-        for (int k = 0; k < numOfSamples.length; k++){
+        for (int k = 0; k < expressionData.length; k++){
             CSVFileReader CSVreader = new CSVFileReader(datasetsPaths[k], csvSeparator);
 
             int i = 0;
@@ -88,8 +78,7 @@ public class GRNCOP2 implements Callable {
             while ((row = CSVreader.readFields()) != null) {
                 if (i == 0) {
                     samples = row.size();
-                    numOfSamples[k] = samples;
-                    D_ged[k] = new float[genes.length][samples];
+                    expressionData[k] = new float[genes.length][samples];
                 } else {
                     if (row.size() != samples) {
                         throw new IllegalArgumentException("The dataset " + datasetsPaths[k] + "is invalid. It should contain the same number of data point for each gene (" + samples + ")");
@@ -97,7 +86,7 @@ public class GRNCOP2 implements Callable {
                 }
 
                 for (int j = 0; j < samples; j++){
-                    D_ged[k][i][j] = Float.parseFloat(row.get(j));
+                    expressionData[k][i][j] = Float.parseFloat(row.get(j));
                 }
                 i++;
             }
@@ -108,8 +97,8 @@ public class GRNCOP2 implements Callable {
         }
     }
 
-    public GRNCOP2Result search() throws InterruptedException{
-        GRN = new Relationship[numOfSamples.length][window + 1][genes.length][genes.length];
+    public GRNCOP2Result search() throws InterruptedException {
+        GRN = new Relationship[expressionData.length][window + 1][genes.length][genes.length];
 
         for (int gene = 0; gene < genes.length; gene++) {
             completionService.submit(new GRNCOP2(gene));
@@ -217,10 +206,11 @@ public class GRNCOP2 implements Callable {
     
     @Override
     public Void call() throws Exception {
-        for (int k = 0; k < numOfSamples.length; k++) {
-            float[][] ged = D_ged[k];
+        for (int k = 0; k < expressionData.length; k++) {
+            float[][] ged = expressionData[k];
             for (int w = 0; w < window + 1; w++) {
-                int samplesToAnalyze = numOfSamples[k] - w;
+                int samplesToAnalyze = ged[0].length - w;
+
                 float[] medg = new float[genes.length];
                 boolean[] active = new boolean[genes.length];
                 for (int kGene = 0; kGene < genes.length; kGene++) {
@@ -361,7 +351,7 @@ public class GRNCOP2 implements Callable {
         return pEntropy;
     }
 
-    public Relationship[] ComputeSolution(float[][] ged, Threshold[] WTHRM, float[] MEDG, int numOfSamples, int w) {
+    private Relationship[] ComputeSolution(float[][] ged, Threshold[] WTHRM, float[] MEDG, int numOfSamples, int w) {
         Relationship[] relationships = new Relationship[genes.length];
         for (int gene = 0; gene < genes.length; gene++) {
             if (gene == pGene || !WTHRM[gene].active) {
@@ -421,10 +411,8 @@ public class GRNCOP2 implements Callable {
     }
 
     private float DGEDM(float[] ged, Threshold[] WTHRM, float[] MEDG, int w, int i, int j){
-        if (i != pGene){
-            return ged[j] < WTHRM[i].t ? -1 : 1;
-        } else {
-            return ged[j + w] < MEDG[pGene] ? -1 : 1;
-        }
+        return i != pGene
+            ? ged[j] < WTHRM[i].t ? -1 : 1
+            : ged[j + w] < MEDG[pGene] ? -1 : 1;
     }
 }

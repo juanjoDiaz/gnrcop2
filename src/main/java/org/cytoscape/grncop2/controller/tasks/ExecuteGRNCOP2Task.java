@@ -20,7 +20,7 @@ public class ExecuteGRNCOP2Task extends AbstractTask {
     
     public ExecuteGRNCOP2Task(String genesFilePath, String[] datasetsPaths, int window, char csvSeparator) {
         grncop2 = new GRNCOP2();
-        grncop2.SetWindow(window);
+        grncop2.setWindow(window);
         this.genesFilePath = genesFilePath;
         this.datasetsPaths = datasetsPaths;
         this.csvSeparator = csvSeparator;
