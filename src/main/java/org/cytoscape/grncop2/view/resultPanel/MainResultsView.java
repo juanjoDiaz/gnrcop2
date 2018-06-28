@@ -76,52 +76,59 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         closeResultsButton = new javax.swing.JButton();
 
         rcaLabel.setText("RCA");
+        rcaLabel.setToolTipText("Rule Consensus Accuracy (RCA) threhold specifies the minimum proportion of datasets in which a rule must predict well");
 
-        rcaSlider.setToolTipText("");
+        rcaSlider.setToolTipText("Rule Consensus Accuracy (RCA) threhold specifies the minimum proportion of datasets in which a rule must predict well");
         rcaSlider.setValue(95);
 
         rcaTextField.setText("" + rcaSlider.getValue());
-        rcaTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rcaTextFieldActionPerformed(evt);
-            }
-        });
+        rcaTextField.setToolTipText("Rule Consensus Accuracy (RCA) threhold specifies the minimum proportion of datasets in which a rule must predict well");
         rcaTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 rcaTextFieldFocusLost(evt);
             }
         });
+        rcaTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rcaTextFieldActionPerformed(evt);
+            }
+        });
 
         accuracyLabel.setText("Accuracy");
+        accuracyLabel.setToolTipText("Accuracy acts as a cut off for rules that do not predict well based on the calculated score");
 
-        accuracySlider.setToolTipText("");
+        accuracySlider.setToolTipText("Accuracy acts as a cut off for rules that do not predict well based on the calculated score");
         accuracySlider.setValue(95);
 
         accuracyTextField.setText("" + accuracySlider.getValue());
-        accuracyTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                accuracyTextFieldActionPerformed(evt);
-            }
-        });
+        accuracyTextField.setToolTipText("Accuracy acts as a cut off for rules that do not predict well based on the calculated score");
         accuracyTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 accuracyTextFieldFocusLost(evt);
             }
         });
+        accuracyTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accuracyTextFieldActionPerformed(evt);
+            }
+        });
 
-        coverageLabel.setText("Percentage");
+        coverageLabel.setText("Coverage");
+        coverageLabel.setToolTipText("Sample Coverage Percentage (SCP) specifies the minimum TP (TN) count in relation to the number of samples to avoid rules with high accuracy but a small sample size");
 
+        coverageSlider.setToolTipText("Sample Coverage Percentage (SCP) specifies the minimum TP (TN) count in relation to the number of samples to avoid rules with high accuracy but a small sample size");
         coverageSlider.setValue(95);
 
         coverageTextField.setText("" + coverageSlider.getValue());
-        coverageTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                coverageTextFieldActionPerformed(evt);
-            }
-        });
+        coverageTextField.setToolTipText("Sample Coverage Percentage (SCP) specifies the minimum TP (TN) count in relation to the number of samples to avoid rules with high accuracy but a small sample size");
         coverageTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 coverageTextFieldFocusLost(evt);
+            }
+        });
+        coverageTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                coverageTextFieldActionPerformed(evt);
             }
         });
 
@@ -206,7 +213,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
                                     .addComponent(rcaSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(accuracySlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(coverageSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                    .addComponent(applyFiltersButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
+                                    .addComponent(applyFiltersButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(rcaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
