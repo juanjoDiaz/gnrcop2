@@ -162,6 +162,7 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
         });
 
         nextWindowButton.setText(">");
+        nextWindowButton.setEnabled(lag < maxLag);
         nextWindowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextWindowButtonActionPerformed(evt);
@@ -374,8 +375,8 @@ public class MainResultsView extends javax.swing.JPanel implements CytoPanelComp
             }
             enableSelectors = true;
         }
-        prevWindowButton.setEnabled(enableSelectors);
-        nextWindowButton.setEnabled(enableSelectors);
+        prevWindowButton.setEnabled(enableSelectors && lag > 0);
+        nextWindowButton.setEnabled(enableSelectors && lag < maxLag);
         lagTextField.setEnabled(enableSelectors);
         refreshLag();
     }//GEN-LAST:event_showAllToggleButtonActionPerformed

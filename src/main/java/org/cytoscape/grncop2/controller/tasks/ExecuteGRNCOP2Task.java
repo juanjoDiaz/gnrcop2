@@ -13,14 +13,14 @@ import org.cytoscape.work.TaskMonitor;
  * @author Juan José Díaz Montaña
  */
 public class ExecuteGRNCOP2Task extends AbstractTask {
-    private final GRNCOP2 grncop2;
+    private GRNCOP2 grncop2;
+    private final int window;
     private final String genesFilePath;
     private final String[] datasetsPaths;
     private final char csvSeparator;
     
     public ExecuteGRNCOP2Task(String genesFilePath, String[] datasetsPaths, int window, char csvSeparator) {
-        grncop2 = new GRNCOP2();
-        grncop2.setWindow(window);
+        this.window = window;
         this.genesFilePath = genesFilePath;
         this.datasetsPaths = datasetsPaths;
         this.csvSeparator = csvSeparator;
@@ -31,10 +31,9 @@ public class ExecuteGRNCOP2Task extends AbstractTask {
         try {
             tm.setTitle("Running GNRCOP2 analysis");
             ProgressMonitor pm = new CytoscapeTaskMonitor(tm);
-            grncop2.setProgressMonitor(pm);
+            grncop2 = new GRNCOP2(pm);
             pm.setStatus("Loading input files");
-            grncop2.load(genesFilePath, datasetsPaths, csvSeparator);
-            GRNCOP2Result result = grncop2.search();
+            GRNCOP2Result result = grncop2.search(genesFilePath, datasetsPaths, csvSeparator, window);
             insertTasksAfterCurrentTask(new ShowResultsTask(result));
         } catch (Exception ex) {
             String error = ex.getMessage();

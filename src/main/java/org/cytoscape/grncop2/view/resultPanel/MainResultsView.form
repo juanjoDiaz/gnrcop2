@@ -228,6 +228,9 @@
     <Component class="javax.swing.JButton" name="nextWindowButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="&gt;"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="lag &lt; maxLag" type="code"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextWindowButtonActionPerformed"/>
